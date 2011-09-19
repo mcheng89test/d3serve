@@ -1,3 +1,23 @@
+/*
+ Diablo 3 Server Emulator
+ Copyright (C) 2011 D3Sharp (https://github.com/raistlinthewiz/d3sharp)
+ 
+ Ported to C++ by mcheng89
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "authenticationservice.h"
 #include "../../proto/service/authentication/authentication.pb.h"
 
@@ -10,7 +30,9 @@ Packet AuthenticationService::Logon(ClientService *client, Packet packetIn) {
     
     Logger::Trace("RPC:Authentication:Logon(): %s", request.email().c_str());
     client->Account = AccountsManager::GetAccount(request.email());
-    //std::transform(c->Email.begin(), c->Email.end(), c->Email.begin(), ::tolower);
+    if (!client->Account.isInitialized())
+        return Packet::getInvalidPacket();
+        //invalid packet indicates error and will close connection
     
     bnet::protocol::authentication::LogonResponse response;
     response.mutable_account()->set_high(client->Account.getBnetAccountID().high());
