@@ -1,5 +1,5 @@
 /*
- Diablo 3 Server Emulator
+ Diablo 3 Server Emulator - DELETE
  Copyright (C) 2011 D3Sharp (https://github.com/raistlinthewiz/d3sharp)
  
  Ported to C++ by mcheng89
